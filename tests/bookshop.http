@@ -1,0 +1,42 @@
+### List all Books - deep read
+GET http://localhost:4004/browse/Books?
+&$expand=currency
+
+
+
+### Try to get the Books
+GET http://localhost:4004/browse/Books?$expand=author
+
+### Browse Books expanded Author
+POST http://localhost:4004/browse/Books
+Content-Type: application/json
+
+{
+    "title":"Anna Karenina",
+    "stock": 10
+}
+
+//Testing
+
+### Service Document
+GET http://localhost:4004/browse/Books?$expand=author
+
+
+### Service $metadata document
+GET http://localhost:4004/browse/$metadata
+
+### Browsing Books
+GET http://localhost:4004/browse/Books?$expand=currency
+  &$select=title,author
+ &sap-language=de
+
+### Browsing Authors
+GET http://localhost:4004/admin/Authors?
+&$select=name,dateOfBirth,placeOfBirth
+&$expand=books($select=title;$expand=currency)
+&$filter=ID eq 101
+&sap-language=en
+
+### Odata Filters
+
+GET  http://localhost:4004/admin/Authors?$select=ID,name&$filter=startswith(name,'e')

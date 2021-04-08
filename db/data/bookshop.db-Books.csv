@@ -1,0 +1,6 @@
+ID;title;descr;author_ID;movie_ID;stock;price;currency_code
+201;Wuthering Heights;Hello this book is one of the best books of our bookshop;101;1;12;10.04;GBP
+207;Jane Eyre;Hello this book is one of the best books of our bookshop;107;2;11;15.34;GBP
+251;The Raven;Hello this book is one of the best books of our bookshop;150;3;333;16.04;USD
+252;Eleonora;Hello this book is one of the best books of our bookshop;150;4;555;14.04;USD
+271;Catweazle;Hello this book is one of the best books of our bookshop;170;5;22;13.64;EUR
