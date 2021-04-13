@@ -26,8 +26,7 @@ entity Authors : managed {
         dateOfDeath  : Date;
         placeOfBirth : String;
         placeOfDeath : String;
-        books        : Association to many Books
-                           on books.author = $self;
+        books        : Association to many Books on books.author = $self;
 }
 
 entity Orders : managed, cuid {
@@ -48,8 +47,7 @@ entity OrderItems : cuid {
 entity Movies : managed, additionalInfo {
     key ID    : Integer;
         name  : String(111);
-        book : Association to one Books
-                    on book.movie = $self;
+        
 }
 
 aspect additionalInfo {
