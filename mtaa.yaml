@@ -34,7 +34,7 @@ modules:
  # -------------------- SIDECAR MODULE ------------------------
  - name: bookshop-db-deployer
  # ------------------------------------------------------------
-   type: hdb
+   type: com.sap.xs.hdi
    path: gen/db  
    parameters:
      buildpack: nodejs_buildpack
@@ -52,20 +52,11 @@ resources:
 # ------------------------------------------------------------
    type: com.sap.xs.hdi-container
    parameters:
-     service: hana  # or 'hanatrial' on trial landscapes
+     service: hanatrial  # or 'hanatrial' on trial landscapes
      service-plan: hdi-shared
    properties:
      hdi-service-name: ${service-name}
 # ------------------------------------------------------------
  - name: bookshop-uaa
 # ------------------------------------------------------------
-   type: org.cloudfoundry.managed-service
-   parameters:
-     path: ./xs-security.json
-     service: xsuaa
-     service-plan: application  
-     config:
-       xsappname: bookshop-${space}    #  name + space dependency
-       tenant-mode: dedicated
-
-
+   type: org.cloudfoundry.existing-service

@@ -1,6 +1,6 @@
 ## Generated mta.yaml based on template version 0.4.0
 ## appName = bookshop
-## language=nodejs; multitenant=false
+## language=nodejs; multiTenant=false
 ## approuter=
 _schema-version: '3.1'
 ID: bookshop
@@ -25,7 +25,6 @@ modules:
    requires:
     # Resources extracted from CAP configuration
     - name: bookshop-db
-    - name: bookshop-uaa
    provides:
     - name: srv-api      # required by consumers of CAP services (e.g. approuter)
       properties:
@@ -34,14 +33,33 @@ modules:
  # -------------------- SIDECAR MODULE ------------------------
  - name: bookshop-db-deployer
  # ------------------------------------------------------------
-   type: hdb
+   type: com.sap.xs.hdi
    path: gen/db  
    parameters:
-     buildpack: nodejs_buildpack
+    app-name: bookshop-db
+    buildpack: nodejs_buildpack
    requires:
     # 'hana' and 'xsuaa' resources extracted from CAP configuration
     - name: bookshop-db
-    - name: bookshop-uaa
+    - name: bookshop-db-uaa
+
+# --------------------   APP  -------------------- #
+ - name: bookshop-db-app
+   type: nodejs
+   path: gen/app
+   parameters:
+      memory: 256M
+   build-parameters:
+     requires:
+       - name: bookshop-srv
+   requires:
+    - name: bookshop-db-uaa
+    - name: srv-api
+      group: destinations
+      properties:
+         forwardAuthToken: true
+         name: srv-api
+         url: ~{srv-url}
 
 
 resources:
@@ -52,20 +70,21 @@ resources:
 # ------------------------------------------------------------
    type: com.sap.xs.hdi-container
    parameters:
-     service: hana  # or 'hanatrial' on trial landscapes
+     service: hanatrial  # or 'hanatrial' on trial landscapes
      service-plan: hdi-shared
    properties:
      hdi-service-name: ${service-name}
-# ------------------------------------------------------------
- - name: bookshop-uaa
-# ------------------------------------------------------------
+ - name: bookshop-db-uaa
+
+
    type: org.cloudfoundry.managed-service
    parameters:
+    ##### Path to xs-security.json to add roles and scopes   ####    
      path: ./xs-security.json
      service: xsuaa
      service-plan: application  
      config:
-       xsappname: bookshop-${space}    #  name + space dependency
+       xsappname: bookshop-db-${space}    #  name + space dependency
        tenant-mode: dedicated
-
+# ------------------------------------------------------------
 
